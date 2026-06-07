@@ -1,0 +1,417 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ar" dir="rtl">
+
+<!-- Mirrored from www.plasticmoldinghub.com/plugin/jobjoin/?1013_17.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 05 Jun 2026 01:34:37 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/rtl.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover" />
+            
+    <title>نبحث عن الكفاءات | KIWL · PlasticMoldingHub | KIW... | KIWL · PlasticMoldingHub</title>
+    <meta name="Keywords" content="آلة حقن البلاستيك, آلة حقن, KIWL, مجموعة تشيوان تانغ, plasticmoldinghub, مصنع آلات الحقن" />
+    <meta name="Description" content="نبحث عن الكفاءات | KIWL · PlasticMoldingHub | KIW... | KIWL · PlasticMoldingHub. KIWL (مجموعة تشيوان تانغ) تصنع آلات حقن البلاستيك منذ 2002 — حلول R&D والإ..." />
+    <script src="../../js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="../../js/swiper-bundle.js"></script>
+    <script type="text/javascript" src="../../js/animate.min.js"></script>
+    <script type="text/javascript" src="../../js/TweenMax.min.js"></script>
+    <script type="text/javascript" src="../../js/ScrollMagic.js"></script>
+    <script type="text/javascript" src="../../js/plugins/animation.gsap.js"></script>
+    <script type="text/javascript" src="../../layer/layer.js"></script>
+    <script type="text/javascript" src="../../js/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="../../fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+    <script type="text/javascript" src="../../js/js.js?v=2"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/animate.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../fancybox/jquery.fancybox-1.3.4.css"/>
+    <link rel="stylesheet" type="text/css" href="../../dist/css/swiper.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/css.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <script type="text/javascript">
+        $(function(){
+            $(".div4 label").click(function(){
+                $(this).siblings("label").removeClass("chek")
+                $(this).addClass("chek");
+                })
+            })
+        function ck_form() {
+            var tb_1 = $("#jobtitle");
+            if ($("#jobtitle").val() == "") {
+                layer.tips('يرجى إدخال الوظيفة المتقدم لها!', '#jobtitle', {time:2000,tips:[3,"#008cd6"]})
+                tb_1.val("").focus();
+                return false;
+            }
+            var tb_2 = $("#txt_name");
+            if ($.trim(tb_2.val()) == "") {
+                layer.tips('يرجى إدخال الاسم!', '#txt_name', {time:2000,tips:[3,"#008cd6"]})
+                tb_2.val("").focus();
+                return false;
+            }
+            var tb_3 = $("#txt_age");
+            if ($.trim(tb_3.val()) == "") {
+                layer.tips('يرجى إدخال العمر!', '#txt_age', {time:2000,tips:[3,"#008cd6"]})
+                tb_3.val("").focus();
+                return false;
+            }
+            var tb_4 = $("#txt_phone");
+            if ($.trim(tb_4.val()) == "") {
+                layer.tips('يرجى إدخال رقم الهاتف المحمول!', '#txt_phone', {time:2000,tips:[3,"#008cd6"]})
+                tb_4.val("").focus();
+                return false;
+            }
+            else if (!Validate.cellهاتف()) {
+                layer.tips('يرجى إدخال رقم هاتف صحيح!', '#txt_phone', {time:2000,tips:[3,"#008cd6"]})
+                tb_4.focus();
+                return false;
+            }
+            if($("#txt_email").val()!=""){
+                //التحقق منالبريد الإلكترونيالصيغة
+                        var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                        if (!reg.test($("#txt_email").val())) {
+                layer.tips('البريد الإلكتروني خطأ!', '#txt_email', {time:2000,tips:[3,"#008cd6"]})
+                            $("#txt_email").focus();
+                            return false;
+                        }
+                }
+            var tb_6 = $("#txt_content");
+            if ($.trim(tb_6.val()) == "") {
+                layer.tips('يرجى إدخال السيرة الذاتية!', '#txt_content', {time:2000,tips:[3,"#008cd6"]})
+                tb_6.val("").focus();
+                return false;
+            }
+            var tb_5 = $("#txt_Code");
+            if ($.trim(tb_5.val()) == "") {
+                layer.tips('يرجى إدخال رمز التحقق!', '#txt_Code', {time:2000,tips:[3,"#008cd6"]})
+                tb_5.val("").focus();
+                return false;
+            }
+            return true;
+        }
+        var Validate = {
+            isرقم الهاتف: function (s) {
+                var patrn = /^0\d{2,3}-?\d{7,8}$/
+                if (!patrn.test(s)) return false
+                return true
+            },
+            isMobile: function (value) {
+                var validateReg = /^((\+?86)|(\(\+86\)))?1\d{10}$/;
+                return validateReg.test(value);
+            },
+            cellهاتف: function () {
+                var cellهاتفNumber = $("#txt_phone").val();
+                if (Validate.isMobile(cellهاتفNumber) || Validate.isرقم الهاتف(cellهاتفNumber)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            teleهاتف: function () {
+            }
+        }
+        
+        </script>
+<link rel="stylesheet" type="text/css" href="../../css/chat-widget.css" />
+            <!-- kiwl-seo -->
+<link rel="canonical" href="https://www.plasticmoldinghub.com/ar/plugin/jobjoin/indexca17.html" />
+<link rel="alternate" hreflang="en" href="https://www.plasticmoldinghub.com/en/plugin/jobjoin/indexca17.html" />
+<link rel="alternate" hreflang="ar" href="https://www.plasticmoldinghub.com/ar/plugin/jobjoin/indexca17.html" />
+<link rel="alternate" hreflang="x-default" href="https://www.plasticmoldinghub.com/en/plugin/jobjoin/indexca17.html" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PlasticMoldingHub | KIWL" />
+<meta property="og:title" content="نبحث عن الكفاءات | KIWL · PlasticMoldingHub | KIW... | KIWL · PlasticMoldingHub" />
+<meta property="og:description" content="نبحث عن الكفاءات | KIWL · PlasticMoldingHub | KIW... | KIWL · PlasticMoldingHub. KIWL (مجموعة تشيوان تانغ) تصنع آلات حقن البلاستيك منذ 2002 — حلول R&D والإ..." />
+<meta property="og:url" content="https://www.plasticmoldinghub.com/ar/plugin/jobjoin/indexca17.html" />
+<meta property="og:image" content="https://www.plasticmoldinghub.com/en/images/index_02.png" />
+<meta property="og:locale" content="ar_SA" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="نبحث عن الكفاءات | KIWL · PlasticMoldingHub | KIW... | KIWL · PlasticMoldingHub" />
+<meta name="twitter:description" content="نبحث عن الكفاءات | KIWL · PlasticMoldingHub | KIW... | KIWL · PlasticMoldingHub. KIWL (مجموعة تشيوان تانغ) تصنع آلات حقن البلاستيك منذ 2002 — حلول R&D والإ..." />
+<meta name="twitter:image" content="https://www.plasticmoldinghub.com/en/images/index_02.png" />
+<!-- /kiwl-seo -->
+</head>
+
+<body>
+ <div class="main">
+    <div class="tjio">
+    <div class="searchs"><form action="../search/"">
+     <div class="seaz"><input type="text" value="" name="keys" id="keys" /></div>
+     <div class="seay"><input type="submit" value="بحث" /></div></form>
+    </div>
+</div>
+<div class="in_topbox">
+    <div class="menu">
+        <ul>
+            <li class="cur">
+                <a href="../../index.html">الصفحة الرئيسية للموقع</a><em></em>
+            </li>
+            
+                <li>
+                    <a href="../../products/index.html">مركز المنتجات</a><em></em>
+                    <div class="nav">
+                     
+                        <p><a href="../../products_1/index.html">آلة حقن هيدروليكية بخادم</a></p>
+                     
+                        <p><a href="../../products_2/index.html">آلة حقن كهربائية</a></p>
+                     
+                        <p><a href="../../gyyyf/index.html">سلسلة الآلات المتخصصة</a></p>
+                     
+                        <p><a href="../../products_3/index.html">آلة حقن ثنائية اللوحة</a></p>
+                     
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <a href="../../solution/index.html">التطبيقات الصناعية</a><em></em>
+                    <div class="nav">
+                     
+                        <p><a href="../../engineering/index.html">قطع غيار السيارات</a></p>
+                     
+                        <p><a href="../../ryp/index.html">السلع الاستهلاكية اليومية</a></p>
+                     
+                        <p><a href="../../yil/index.html">الطبية</a></p>
+                     
+                        <p><a href="../../txdz/index.html">الاتصالات والإلكترونيات</a></p>
+                     
+                        <p><a href="../../jd/index.html">الأجهزة المنزلية</a></p>
+                     
+                        <p><a href="../../bz/index.html">التعبئة والتغليف</a></p>
+                     
+                        <p><a href="../../wlhb/index.html">اللوجستيات والبيئة</a></p>
+                     
+                        <p><a href="../../agricultural/index.html">مواد الأحذية</a></p>
+                     
+                        <p><a href="../../wj/index.html">القرطاسية</a></p>
+                     
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <a href="../../news/index.html">الأخبار والفعاليات</a><em></em>
+                    <div class="nav">
+                     
+                        <p><a href="../../news/index.html">أحدث الأخبار</a></p>
+                     
+                        <p><a href="../../sbdt/index.html">أخبار KIWL</a></p>
+                     
+                        <p><a href="../../zhxw/index.html">أخبار المعارض</a></p>
+                     
+                        <p><a href="../../hyzx/index.html">أخبار الصناعة</a></p>
+                     
+                    </div>
+                </li>
+            
+            
+                <li>
+                    <a href="../../about/about-1001.html">من نحن</a><em></em>
+                    <!--
+                    <div class="nav">
+                     
+                        <p><a href="/about/about-1002.html">حول KIWL</a></p>
+                     
+                        <p><a href="/whsb/">ثقافة KIWL</a></p>
+                     
+                        <p><a href="/ryzz/">الشهادات والجوائز</a></p>
+                     
+                        <p><a href="/shzr/">المسؤولية الاجتماعية</a></p>
+                     
+                    </div>
+                    -->
+                </li>
+            
+            
+                <li>
+                    <a href="../../services/index.html">الخدمات والدعم</a><em></em>
+                    <div class="nav">
+                     
+                        <p><a href="../../services/index.html">اتصل بنا</a></p>
+                     
+                        <p><a href="../../services/feedback.html">استشارة عبر الإنترنت</a></p>
+                     
+                    </div>
+                </li>
+            
+       
+                <li>
+                    <a href="../../../en/index.html">الإنجليزية</a><em></em>
+                </li>
+
+            <li class="close"><a href="javascript:;">إغلاق</a></li>
+        </ul>
+    </div>
+    </div>
+<div class="main_tops">
+    <div class="main_w">
+        <div class="m_top">
+            <div class="logo"><a href="../../index.html"><img src="../../images/index_02.png" class="logo1"><img src="../../images/logo2.png" class="logo2"></a></div>
+            <div class="m_list">
+                <div class="menu_wap"><i></i></div>
+                <div class="sea_1 top_search"><img src="../../images/index_05.jpg"></div>
+                <div class="m_menu">
+                    <ul>
+                        <li><a href="../../index.html">الرئيسية</a></li>
+                        
+                        <li><a href="../../products/index.html">مركز المنتجات</a></li>
+                        
+                        <li><a href="../../solution/index.html">التطبيقات الصناعية</a></li>
+                        
+                        <li><a href="../../news/index.html">الأخبار والفعاليات</a></li>
+                        
+                        <li><a href="../../about/about-1001.html">من نحن</a></li>
+                        
+                        <li><a href="../../services/index.html">الخدمات والدعم</a></li>
+                        <li><a href="../../../en/index.html">EN</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <div class="a_banner l_a_banner l_a_pro_1">
+        <div class="main_w">
+            <div class="l_a_banner_title">
+            <font>انضم إلينا</font>
+                <p>نخلق قيمة للعملاء وسعادة للموظفين</p>
+            </div>
+            <div class="a_sb"></div>
+        </div>
+    </div>
+    <div class="l_a_banner_list">
+        <div class="l_a_banner_list-1">
+            <div class="main_w">
+                <ul>
+                    
+                        <li><a href="../../about/about-1012.html">التطور المهني</a></li>
+                    
+                        <li class="cur"><a href="../../job/index-2.html">نبحث عن الكفاءات</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="about_content">
+        <div class="main_w">
+            <form method="post" name="" action="https://www.plasticmoldinghub.com/plugin/jobjoin/save.aspx?action=add">
+ <div class="ysuo">
+    <input id="txt_tit" name="txt_tit" class="input large fs_content fs_input" type="hidden" value="مساعد" disabled />
+   <input type="hidden" name="jobtitle" id="Hidden1" value="مساعد" />
+   <input type="hidden" name="jobid" value="17" />
+<div class="xmin tilo">
+<div class="div1">الاسم</div>
+<div class="div2"><font>مطلوب</font></div>
+<div class="div3"><input type="text" value="" name="txt_name" id="txt_name" /></div>
+</div>
+<div class="xmin xbie">
+<div class="div1">الجنس</div>
+<div class="div2"><font>مطلوب</font></div>
+<div class="div4"><label class="chek"><input type="radio" value="ذكر" name="rd_sex" checked="checked" id="rd_sex" /><font>ذكر</font></label><label><input type="radio" value="أنثى" name="rd_sex" id="rd_sex" /><font>أنثى</font></label></div>
+</div>
+<div class="xmin tilo">
+<div class="div1">العمر</div>
+<div class="div2"></div>
+<div class="div3"><input type="text" value="" name="txt_age" id="txt_age" /></div>
+</div>
+<div class="xmin xbie">
+<div class="div1">الحالة الاجتماعية</div>
+<div class="div2"><font>مطلوب</font></div>
+<div class="div4"><label class="chek"><input type="radio" value="أعزب" checked="checked" name="rd_mar" id="rd_mar" /><font>أعزب</font></label><label><input type="radio" value="متزوج" name="rd_mar" id="rd_mar" /><font>متزوج</font></label></div>
+</div>
+<div class="xmin tilo">
+<div class="div1">سنوات الخبرة</div>
+<div class="div2"></div>
+<div class="div3"><input type="text" value="" name="txt_workage" id="txt_workage" /></div>
+</div>
+<div class="xmin tilo nobg">
+<div class="div1">رقم الهاتف</div>
+<div class="div2"><font>مطلوب</font></div>
+<div class="div3"><input type="text" value="" name="txt_phone" id="txt_phone" /></div>
+</div>
+<div class="xmin tilo">
+<div class="div1">البريد الإلكتروني</div>
+<div class="div2"></div>
+<div class="div3"><input type="text" value="" name="txt_email" id="txt_email" /></div>
+</div>
+<div class="xmin tilo nobg">
+<div class="div1">QQ</div>
+<div class="div2"></div>
+<div class="div3"><input type="text" value="" name="txt_qq" id="txt_qq" /></div>
+</div>
+<div class="xmin tilo texa">
+<div class="div1">السيرة الذاتية</div>
+<div class="div2"><font>مطلوب</font></div>
+<div class="div5"><textarea name="txt_content" id="txt_content"></textarea></div>
+</div>
+<div class="xmin tilo nobg ">
+<div class="div1">رمز التحقق</div>
+<div class="div2"><font>مطلوب</font></div>
+<div class="div6"><input type="text" value="" id="txt_Code" name="txt_Code" /></div>
+<div class="div7"><img src="../../tools/verify_code.png" id="valiCode" width="70" height="22" alt="انقر لتغيير رمز التحقق"
+           title="انقر لتغيير رمز التحقق" style="margin-top: 2px; vertical-align: top; cursor: pointer;"
+           onclick="ToggleCode(this, '/tools/verify_code.ashx');return false;" /></div>
+</div>
+</div>
+<div class="qren"><input type="submit" value="تأكيد الإرسال" onclick="return ck_form()" /></div>
+</form>
+                       </div>
+                       </div>
+    <div class="footer">
+    <div class="main_w">
+        <div class="foot_left">
+            <div class="foot_left_1"><img src="../../images/index_27.jpg"></div>
+            <div class="foot_left_2">
+                
+            </div>
+        </div>
+        <div class="foot_center">
+            <ul>
+                <li><a href="../../products/index.html">مركز المنتجات</a></li>
+                <li><a href="../../news/index.html">الأخبار والفعاليات</a></li>
+                <li><a href="../../services/index.html">الخدمات والدعم</a></li>
+                <li><a href="../../solution/index.html">التطبيقات الصناعية</a></li>
+                <li><a href="../../about/about-1001.html">من نحن</a></li>
+                <li><a href="../../job/index.html">انضم إلينا</a></li>
+            </ul>
+        </div>
+        <div class="foot_right">
+            <ul>
+                <li><img src="../../images/index_35.jpg"><p>واتساب</p></li>
+                <li><img src="../../images/index_32.jpg"><p>امسح الرمز<br>لتابعنا</p></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="bottoms"><p><a href="https://beian.miit.gov.cn/" target="_blank">رقم تصريح موقع إلكتروني لإقليم تشجيانغ 11010503-3</a></p></div>
+<script src="../../js/ClickRule_website.js" type="text/javascript" charset="utf-8"></script>
+ </div>
+
+<script src="../../js/chat-widget.js" defer></script>
+</body>
+
+<!-- Mirrored from www.plasticmoldinghub.com/plugin/jobjoin/?1013_17.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 05 Jun 2026 01:34:37 GMT -->
+</html>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+
+</title></head>
+<body>
+    <form method="post" action="https://www.plasticmoldinghub.com/plugin/jobjoin/?1013_17.html" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE2MTY2ODcyMjlkZFtnqggOqbjHqe09cIqjN7OgVeMFXYS9EX2WQuLjjnz2" />
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="DD73DE3D" />
+</div>
+    <div>
+    
+    </div>
+    </form>
+</body>
+</html>

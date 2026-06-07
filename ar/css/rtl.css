@@ -1,0 +1,43 @@
+/* Arabic RTL overrides */
+html[dir="rtl"] body { direction: rtl; text-align: right; }
+html[dir="rtl"] .menu ul,
+html[dir="rtl"] .m_menu ul,
+html[dir="rtl"] .foot_center ul { direction: rtl; }
+html[dir="rtl"] .foot_left_1 { float: right; }
+html[dir="rtl"] .foot_left_2 { float: right; margin-right: .4rem; margin-left: 0; }
+html[dir="rtl"] .logo { float: right; }
+html[dir="rtl"] .m_list { float: left; }
+html[dir="rtl"] .banner_news_main li .font_1 { float: right; }
+html[dir="rtl"] .banner_news_main li .font_2 { float: right; margin-right: .2rem; margin-left: 0; }
+html[dir="rtl"] .banner_news_main li .font_3 { float: left; }
+html[dir="rtl"] .claksi_foot_left::after { left: auto; right: 0; }
+html[dir="rtl"] .l_a_banner_list-1 { left: auto; right: 0; }
+html[dir="rtl"] .m_banner_left { left: auto; right: 1.2rem; transform: scaleX(-1); }
+html[dir="rtl"] .m_banner_right { right: auto; left: 1.2rem; transform: scaleX(-1); }
+html[dir="rtl"] .footer .foot_left_2 a { background-position: right .2rem center; padding-right: .58rem; padding-left: .2rem; }
+html[dir="rtl"] .cdan_1, html[dir="rtl"] .cdan_2 { text-align: right; }
+html[dir="rtl"] .main_w { text-align: right; }
+html[dir="rtl"] .in_topbox .menu { text-align: right; }
+html[dir="rtl"] .nav { text-align: right; }
+html[dir="rtl"] .xwhd_s_c_t_1_3_right_4 { float: left; }
+html[dir="rtl"] .xwhd_s_c_t_1_2_left { float: right; }
+html[dir="rtl"] .xwhd_s_c_t_1_3_right { float: left; }
+html[dir="rtl"] .job8 ul, html[dir="rtl"] .job2 ul { direction: rtl; }
+html[dir="rtl"] .list-paddingleft-2 { padding-right: 0; padding-left: 0; }
+html[dir="rtl"] .seaz { float: right; }
+html[dir="rtl"] .seay { float: left; }
+/* Fallback: show content if ScrollMagic/JS fails to load */
+html[dir="rtl"] .not-animated { opacity: 1; visibility: visible; }
+/* Inner pages: show dark header nav without waiting for scroll/JS */
+html[dir="rtl"] .main:has(.l_a_banner) .main_tops {
+  background: #fff;
+}
+html[dir="rtl"] .main:has(.l_a_banner) .main_tops .m_menu li,
+html[dir="rtl"] .main:has(.l_a_banner) .main_tops .m_menu li a {
+  color: #333;
+}
+html[dir="rtl"] .main:has(.l_a_banner) .main_tops .logo1 { display: block; }
+html[dir="rtl"] .main:has(.l_a_banner) .main_tops .logo2 { display: none; }
+html[dir="rtl"] .main:has(.l_a_banner) .main_tops .menu_wap {
+  background: url(../images/menu_s.png) no-repeat center;
+}
