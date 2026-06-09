@@ -22,19 +22,22 @@ const PATH_MAP = {
   'zhxw/newsShow398.html': 'zhxw/newsShow409.html',
   'zhxw/newsShow397.html': 'zhxw/newsShow411.html',
   'zhxw/news999_2.html': 'zhxw/news1103_2.html',
+  'xc/index.html': 'agricultural/index.html',
+  'xc/newsShow392.html': 'agricultural/newsShow389.html',
 };
 
 const EN_TO_AR = {};
 for (const [arRel, enRel] of Object.entries(PATH_MAP)) {
   EN_TO_AR[enRel] = arRel;
 }
-EN_TO_AR['xc/newsShow392.html'] = 'agricultural/newsShow389.html';
+
+const JUNK_DIR_PREFIXES = ['plugin/', 'fancybox/', 'images/'];
+const SITEMAP_EXCLUDE_FILES = new Set(['shengbang2025.html']);
 
 function arToEnRel(arRel) {
   for (const [ar, en] of Object.entries(PATH_MAP)) {
     if (ar === arRel) return en;
   }
-  if (arRel === 'agricultural/newsShow389.html') return 'xc/newsShow392.html';
   return arRel;
 }
 
@@ -51,35 +54,106 @@ function collectHtmlFiles(dir, base = dir, list = []) {
   return list;
 }
 
+function isIdAliasPage(relPath) {
+  return /\/id=\d+\.html$/i.test(relPath) || /^id=\d+\.html$/i.test(relPath);
+}
+
+function isJunkPath(relPath) {
+  if (SITEMAP_EXCLUDE_FILES.has(relPath)) return true;
+  return JUNK_DIR_PREFIXES.some((p) => relPath.startsWith(p));
+}
+
+function isErrorStub(content) {
+  return /404\.safedog\.cn|safedogsite\/head\.png/i.test(content);
+}
+
+function productShowFromId(relPath) {
+  const m = relPath.match(/id=(\d+)\.html$/i);
+  if (!m) return null;
+  return relPath.replace(/id=\d+\.html$/i, `productShow${m[1]}.html`);
+}
+
+function shouldIndex(relPath, content) {
+  if (isIdAliasPage(relPath)) return false;
+  if (isJunkPath(relPath)) return false;
+  if (isErrorStub(content)) return false;
+  return true;
+}
+
 function extractTitle(content) {
   const m = content.match(/<title>([^<]*)<\/title>/i);
   return m ? m[1].trim() : '';
 }
 
-function extractDescription(content) {
-  const m = content.match(/<meta name="Description" content="([^"]*)"/i);
-  return m ? m[1].trim() : '';
+function extractTopicFromBody(content, relPath) {
+  if (/productShow\d+\.html$/i.test(relPath)) {
+    const dir = relPath.replace(/productShow\d+\.html$/i, '');
+    const id = relPath.match(/productShow(\d+)\.html/i)[1];
+    const re = new RegExp(`productShow${id}\\.html"[^>]*>([^<]+)<`, 'i');
+    const m = content.match(re);
+    if (m && m[1].trim().length > 4) return m[1].replace(/\s+/g, ' ').trim();
+  }
+
+  const curLinks = [...content.matchAll(/<a[^>]*class="[^"]*cur[^"]*"[^>]*>([^<]+)<\/a>/gi)];
+  for (let i = curLinks.length - 1; i >= 0; i--) {
+    const text = curLinks[i][1].replace(/\s+/g, ' ').trim();
+    if (text.length > 4 && !/^home$|^submit$|^more$/i.test(text)) return text;
+  }
+  const h1 = content.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  if (h1) {
+    const text = h1[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    if (text.length > 4) return text.slice(0, 120);
+  }
+  return null;
 }
 
-function cleanTopic(title, site) {
-  let t = title
-    .replace(/&amp;/g, '&')
+function stripBrandSuffix(text, site) {
+  const suffix = site === 'ar' ? CONFIG.titleSuffixAr : CONFIG.titleSuffixEn;
+  let t = text.replace(/&amp;/g, '&').trim();
+  const suffixEsc = suffix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  t = t.replace(new RegExp(`\\s*${suffixEsc}(\\s*${suffixEsc})*`, 'gi'), '');
+  t = t.replace(/\s*\|\s*KIWL\s*·\s*PlasticMoldingHub(\s*\|\s*[^|]+)*/gi, '');
+  t = t.replace(/\s*\|\s*KIWL[^|]*/gi, '');
+  t = t.replace(/\.\.\.\s*$/, '').trim();
+  if (t.includes('|')) t = t.split('|')[0].trim();
+  return t;
+}
+
+function cleanTopic(title, site, bodyTopic) {
+  let fromTitle = stripBrandSuffix(title, site)
     .replace(/-Shanghai Quantang Ecological Technology Group Co\., Ltd\.?\s*$/i, '')
     .replace(/شركة شنغهاي تشيوان تانغ[^-]*$/g, '')
     .trim();
-  const parts = t.split('-').map((p) => p.trim()).filter(Boolean);
+
+  const parts = fromTitle.split('-').map((p) => p.trim()).filter(Boolean);
   if (parts.length > 1 && parts[parts.length - 1].length < 40) {
-    t = parts.slice(0, -1).join(' - ');
+    fromTitle = parts.slice(0, -1).join(' - ');
   }
-  if (parts.length === 1) t = parts[0];
-  if (t.length > 80) t = t.slice(0, 77) + '...';
+
+  let t = fromTitle;
+  if (bodyTopic) {
+    const fromBody = stripBrandSuffix(bodyTopic, site).trim();
+    const titleLooksTruncated = /\.\.\.$/.test(fromTitle) || (fromTitle.length >= 48 && fromBody.length > fromTitle.length + 8);
+    if (fromBody.length > 4 && (titleLooksTruncated || fromBody.length > fromTitle.length + 5 || fromTitle.length < 8)) {
+      t = fromBody;
+    }
+  }
+
+  if (t.length > 100) t = t.slice(0, 97).trim();
   return t || (site === 'ar' ? CONFIG.companyAr : CONFIG.companyEn);
 }
 
-function optimizeTitle(topic, site) {
+function optimizeTitle(topic, site, relPath = '') {
   const suffix = site === 'ar' ? CONFIG.titleSuffixAr : CONFIG.titleSuffixEn;
-  let main = topic;
-  if (main.length > 52) main = main.slice(0, 49) + '...';
+  let main = stripBrandSuffix(topic, site);
+  const isProduct = /productShow\d+\.html$/i.test(relPath);
+  const maxTotal = isProduct ? 92 : 72;
+  const maxMain = Math.max(45, maxTotal - suffix.length - 1);
+  if (main.length > maxMain) {
+    const cut = main.slice(0, maxMain);
+    const lastSpace = cut.lastIndexOf(' ');
+    main = lastSpace > 24 ? cut.slice(0, lastSpace) : cut.trim() + '...';
+  }
   return `${main} ${suffix}`;
 }
 
@@ -116,32 +190,64 @@ function sectionKey(relPath) {
   return 'default';
 }
 
-function getKeywords(relPath, site, topic) {
+function pageType(relPath) {
+  if (/productShow\d+\.html$/i.test(relPath)) return 'product';
+  if (/newsShow\d+\.html$/i.test(relPath) || /news\d+_\d+\.html$/i.test(relPath)) return 'news';
+  if (relPath === 'index.html') return 'index';
+  if (sectionKey(relPath).startsWith('app_')) return 'application';
+  if (/^products/.test(relPath.split('/')[0]) || ['gyyyf'].includes(relPath.split('/')[0])) {
+    return relPath.endsWith('index.html') ? 'productCategory' : 'default';
+  }
   const key = sectionKey(relPath);
-  const pool = site === 'ar' ? CONFIG.keywordsAr : CONFIG.keywordsEn;
-  let keywords = pool[key] || pool.default;
+  if (['about', 'services', 'solution', 'job'].includes(key)) return key;
+  if (key === 'news' && relPath.endsWith('index.html')) return 'news';
+  return 'default';
+}
 
+/** Pyramid: tier3 (page) + tier2 (section) + tier1 (brand core) */
+function getKeywords(relPath, site, topic) {
+  const pyramid = CONFIG.keywordPyramid[site];
+  const key = sectionKey(relPath);
+  if (key === 'home') return pyramid.tier1;
+
+  const tier1 = pyramid.tier1;
+  const tier2 = pyramid.tier2[key] || pyramid.tier2.products || tier1;
+
+  const tier3Parts = [];
   if (/productShow\d+\.html$/i.test(relPath) && topic) {
     const series = topic.match(/\b(SKII?|SK-HYB|SE|S|J6|V|SH|NS)\b/i);
-    if (series) {
-      keywords = `${series[0]}, ${keywords}`;
-    }
+    if (series) tier3Parts.push(`${series[0]} injection molding machine`);
+    tier3Parts.push(topic.split(/[,，]/)[0].slice(0, 60));
+  } else if (/newsShow|news\d+_/i.test(relPath) && topic) {
+    tier3Parts.push(topic.slice(0, 50));
+  } else if (topic && relPath.endsWith('index.html') && key !== 'home') {
+    tier3Parts.push(topic.slice(0, 50));
   }
 
-  return keywords;
+  const tier3 = tier3Parts.filter(Boolean).join(', ');
+  return [tier3, tier2, tier1].filter(Boolean).join(', ');
+}
+
+function fillTemplate(tpl, topic) {
+  return tpl.replace(/\{topic\}/g, topic);
 }
 
 function buildDescription(topic, site, relPath) {
-  const base =
-    site === 'ar'
-      ? `${topic}. KIWL (${CONFIG.companyAr}) تصنع آلات حقن البلاستيك منذ 2002 — حلول R&D والإنتاج والمبيعات والخدمة.`
-      : `${topic}. KIWL (${CONFIG.companyEn}) manufactures injection molding machines since 2002 — R&D, production, sales and service.`;
-  const cta =
-    site === 'ar'
-      ? ' تواصل معنا على www.plasticmoldinghub.com.'
-      : ' Visit www.plasticmoldinghub.com for quotes and support.';
-  let desc = base + cta;
-  if (desc.length > 158) desc = desc.slice(0, 155) + '...';
+  const descCfg = CONFIG.descriptions[site];
+  const type = pageType(relPath);
+  const key = sectionKey(relPath);
+
+  let template;
+  if (type === 'index' || key === 'home') template = descCfg.home;
+  else if (type === 'product') template = descCfg.product;
+  else if (type === 'productCategory') template = descCfg.productCategory;
+  else if (type === 'application') template = descCfg.application;
+  else if (type === 'news') template = descCfg.news;
+  else if (descCfg[key]) template = descCfg[key];
+  else template = descCfg.default;
+
+  let desc = fillTemplate(template, topic);
+  if (desc.length > 158) desc = desc.slice(0, 155).trim() + '...';
   return desc;
 }
 
@@ -154,6 +260,17 @@ function alternateRel(relPath, site) {
   return arToEnRel(relPath);
 }
 
+function sitemapPriority(relPath) {
+  if (relPath === 'index.html') return '1.0';
+  const type = pageType(relPath);
+  if (type === 'productCategory' || relPath === 'solution/index.html' || relPath === 'products/index.html') {
+    return '0.9';
+  }
+  if (type === 'product' || type === 'application') return '0.8';
+  if (type === 'news') return '0.6';
+  return '0.7';
+}
+
 function stripOldSeo(content) {
   return content
     .replace(/<!-- kiwl-seo -->[\s\S]*?<!-- \/kiwl-seo -->\n?/g, '')
@@ -161,49 +278,113 @@ function stripOldSeo(content) {
     .replace(/<link rel="alternate" hreflang="[^"]*"[^>]*>\n?/gi, '')
     .replace(/<meta property="og:[^"]+"[^>]*>\n?/gi, '')
     .replace(/<meta name="twitter:[^"]+"[^>]*>\n?/gi, '')
-    .replace(/<meta name="robots" content="index, follow"[^>]*>\n?/gi, '')
+    .replace(/<meta name="robots" content="[^"]*"[^>]*>\n?/gi, '')
     .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>\n?/gi, '');
 }
 
 function orgSchema(site) {
-  return JSON.stringify(
-    {
-      '@context': 'https://schema.org',
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'KIWL - Quantang Group',
+    alternateName: CONFIG.siteName,
+    url: DOMAIN,
+    logo: `${DOMAIN}${CONFIG.defaultOgImage}`,
+    description:
+      site === 'ar'
+        ? 'مصنع آلات حقن البلاستيك KIWL — مجموعة تشيوان تانغ منذ 2002'
+        : 'KIWL injection molding machine manufacturer — Quantang Group since 2002',
+    email: CONFIG.contactEmail,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: CONFIG.whatsapp,
+      contactType: 'sales',
+      availableLanguage: ['English', 'Arabic'],
+    },
+  };
+}
+
+function websiteSchema(site) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: `${CONFIG.siteName} | ${CONFIG.brand}`,
+    url: `${DOMAIN}/${site}/index.html`,
+    publisher: { '@type': 'Organization', name: 'KIWL - Quantang Group' },
+    inLanguage: site === 'ar' ? 'ar' : 'en',
+  };
+}
+
+function productSchema(topic, description, canonical) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: topic,
+    description,
+    url: canonical,
+    brand: { '@type': 'Brand', name: CONFIG.brand },
+    manufacturer: { '@type': 'Organization', name: 'KIWL - Quantang Group' },
+  };
+}
+
+function articleSchema(topic, description, canonical) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: topic.slice(0, 110),
+    description,
+    url: canonical,
+    publisher: {
       '@type': 'Organization',
       name: 'KIWL - Quantang Group',
-      alternateName: CONFIG.siteName,
-      url: DOMAIN,
-      logo: `${DOMAIN}${CONFIG.defaultOgImage}`,
-      description:
-        site === 'ar'
-          ? 'مصنع آلات حقن البلاستيك KIWL — مجموعة تشيوان تانغ منذ 2002'
-          : 'KIWL injection molding machine manufacturer — Quantang Group since 2002',
-      email: CONFIG.contactEmail,
-      contactPoint: {
-        '@type': 'ContactPoint',
-        telephone: CONFIG.whatsapp,
-        contactType: 'sales',
-        availableLanguage: ['English', 'Arabic'],
-      },
+      logo: { '@type': 'ImageObject', url: `${DOMAIN}${CONFIG.defaultOgImage}` },
     },
-    null,
-    2
-  );
+  };
+}
+
+function buildJsonLd(opts) {
+  const { topic, description, canonical, site, isHome, relPath } = opts;
+  const graphs = [];
+  if (isHome) {
+    graphs.push(orgSchema(site), websiteSchema(site));
+  } else if (/productShow\d+\.html$/i.test(relPath)) {
+    graphs.push(productSchema(topic, description, canonical));
+  } else if (/newsShow\d+\.html$/i.test(relPath) || /news\d+_\d+\.html$/i.test(relPath)) {
+    graphs.push(articleSchema(topic, description, canonical));
+  }
+  if (!graphs.length) return '';
+  const payload = graphs.length === 1 ? graphs[0] : { '@context': 'https://schema.org', '@graph': graphs };
+  return `\n<script type="application/ld+json">\n${JSON.stringify(payload, null, 2)}\n</script>`;
 }
 
 function buildSeoBlock(opts) {
-  const { title, description, keywords, canonical, enUrl, arUrl, site, isHome } = opts;
+  const {
+    title,
+    description,
+    keywords,
+    canonical,
+    enUrl,
+    arUrl,
+    site,
+    isHome,
+    relPath,
+    topic,
+    indexable,
+  } = opts;
   const ogImage = `${DOMAIN}${CONFIG.defaultOgImage}`;
   const locale = site === 'ar' ? 'ar_SA' : 'en_US';
   const altLocale = site === 'ar' ? 'en_US' : 'ar_SA';
+  const robots = indexable ? 'index, follow' : 'noindex, follow';
+  const ogType =
+    /productShow\d+\.html$/i.test(relPath) ? 'product' : /newsShow|news\d+_/i.test(relPath) ? 'article' : 'website';
 
   let block = `<!-- kiwl-seo -->
 <link rel="canonical" href="${canonical}" />
 <link rel="alternate" hreflang="en" href="${enUrl}" />
 <link rel="alternate" hreflang="ar" href="${arUrl}" />
 <link rel="alternate" hreflang="x-default" href="${enUrl}" />
-<meta name="robots" content="index, follow" />
-<meta property="og:type" content="website" />
+<meta name="robots" content="${robots}" />
+<meta property="og:type" content="${ogType}" />
 <meta property="og:site_name" content="${CONFIG.siteName} | ${CONFIG.brand}" />
 <meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />
 <meta property="og:description" content="${description.replace(/"/g, '&quot;')}" />
@@ -216,9 +397,7 @@ function buildSeoBlock(opts) {
 <meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />
 <meta name="twitter:image" content="${ogImage}" />`;
 
-  if (isHome) {
-    block += `\n<script type="application/ld+json">\n${orgSchema(site)}\n</script>`;
-  }
+  block += buildJsonLd({ topic, description, canonical, site, isHome, relPath });
   block += '\n<!-- /kiwl-seo -->';
   return block;
 }
@@ -254,74 +433,110 @@ function upsertMeta(content, name, value, attr = 'name') {
   return content.replace(/<meta name="viewport"[^>]*\/?>/i, (m) => `${m}\n    ${tag}`);
 }
 
+function resolveCanonical(site, relPath, indexable) {
+  if (isIdAliasPage(relPath)) {
+    const productRel = productShowFromId(relPath);
+    if (productRel) return pageUrl(site, productRel);
+  }
+  return pageUrl(site, relPath);
+}
+
 function optimizePage(content, relPath, site) {
   content = replaceDomainRefs(content);
   content = stripOldSeo(content);
   content = setHtmlLang(content, site);
 
-  const rawTitle = extractTitle(content);
+  const indexable = shouldIndex(relPath, content);
   const isHome = relPath === 'index.html';
+  const bodyTopic = extractTopicFromBody(content, relPath);
+  const rawTitle = extractTitle(content);
 
-  let topic = cleanTopic(rawTitle, site);
-  let title = optimizeTitle(topic, site);
+  let topic = cleanTopic(rawTitle, site, bodyTopic);
+  let title = optimizeTitle(topic, site, relPath);
   let description = buildDescription(topic, site, relPath);
 
   if (isHome) {
-    if (site === 'en') {
-      topic = 'Injection Molding Machines Manufacturer';
-      title = `Injection Molding Machines Manufacturer ${CONFIG.titleSuffixEn}`;
-      description =
-        'KIWL (Quantang Group) manufactures hydraulic servo, electric and two-platen injection molding machines since 2002. Request a quote at www.plasticmoldinghub.com.';
-    } else {
-      topic = 'مصنع آلات حقن البلاستيك';
-      title = `مصنع آلات حقن البلاستيك ${CONFIG.titleSuffixAr}`;
-      description =
-        'KIWL (مجموعة تشيوان تانغ) تصنع آلات حقن هيدروليكية وكهربائية وثنائية اللوحة منذ 2002. تواصل معنا على www.plasticmoldinghub.com.';
-    }
+    topic = CONFIG.titles[site].home;
+    title = optimizeTitle(topic, site, relPath);
+    description = CONFIG.descriptions[site].home;
   }
 
   const keywords = getKeywords(relPath, site, topic);
-  const canonical = pageUrl(site, relPath);
+  const canonical = resolveCanonical(site, relPath, indexable);
   const altRel = alternateRel(relPath, site);
-  const enUrl = site === 'en' ? canonical : pageUrl('en', altRel);
-  const arUrl = site === 'ar' ? canonical : pageUrl('ar', altRel);
+  const normRel = (r) => (isIdAliasPage(r) ? productShowFromId(r) || r : r);
+  const enUrl = site === 'en' ? canonical : pageUrl('en', normRel(altRel));
+  const arUrl = site === 'ar' ? canonical : pageUrl('ar', normRel(altRel));
 
   content = content.replace(/<title>[^<]*<\/title>/i, `<title>${title.replace(/</g, '')}</title>`);
   content = upsertMeta(content, 'Description', description);
   content = upsertMeta(content, 'Keywords', keywords);
 
-  const seoBlock = buildSeoBlock({ title, description, keywords, canonical, enUrl, arUrl, site, isHome });
+  const seoBlock = buildSeoBlock({
+    title,
+    description,
+    keywords,
+    canonical,
+    enUrl,
+    arUrl,
+    site,
+    isHome,
+    relPath,
+    topic,
+    indexable,
+  });
   content = content.replace(/<\/head>/i, `    ${seoBlock}\n</head>`);
 
   return content;
 }
 
-function generateSitemap() {
-  const urls = [];
-  for (const site of ['en', 'ar']) {
-    const base = site === 'en' ? EN_ROOT : AR_ROOT;
-    if (!fs.existsSync(base)) continue;
-    for (const { rel } of collectHtmlFiles(base, base)) {
-      urls.push(pageUrl(site, rel));
-    }
+function buildHreflangLinks(site, relPath) {
+  const altRel = alternateRel(relPath, site);
+  const enRel = site === 'en' ? relPath : altRel;
+  const arRel = site === 'ar' ? relPath : alternateRel(relPath, 'en');
+  const norm = (s, r) => {
+    const path = isIdAliasPage(r) ? productShowFromId(r) || r : r;
+    return pageUrl(s, path);
+  };
+  return {
+    en: norm('en', enRel),
+    ar: norm('ar', arRel),
+  };
+}
+
+function generateSitemap(indexablePages) {
+  const urlEntries = new Map();
+
+  for (const { site, rel } of indexablePages) {
+    const loc = pageUrl(site, rel);
+    if (urlEntries.has(loc)) continue;
+    const hreflang = buildHreflangLinks(site, rel);
+    urlEntries.set(loc, { loc, hreflang, rel, priority: sitemapPriority(rel) });
   }
-  urls.push(`${DOMAIN}/`);
-  urls.push(`${DOMAIN}/index.html`);
+
+  const sorted = [...urlEntries.values()].sort((a, b) => {
+    if (a.priority !== b.priority) return parseFloat(b.priority) - parseFloat(a.priority);
+    return a.loc.localeCompare(b.loc);
+  });
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${urls
+${sorted
   .map(
-    (u) => `  <url>
-    <loc>${u}</loc>
+    (entry) => `  <url>
+    <loc>${entry.loc}</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="${entry.hreflang.en}" />
+    <xhtml:link rel="alternate" hreflang="ar" href="${entry.hreflang.ar}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${entry.hreflang.en}" />
     <changefreq>weekly</changefreq>
-    <priority>${u.includes('/index.html') && !u.includes('/', 8) ? '1.0' : '0.7'}</priority>
+    <priority>${entry.priority}</priority>
   </url>`
   )
   .join('\n')}
 </urlset>`;
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), xml, 'utf8');
+  return sorted.length;
 }
 
 function generateRobots() {
@@ -337,11 +552,17 @@ function generateRobots() {
     'User-agent: *',
     'Allow: /en/',
     'Allow: /ar/',
-    'Allow: /index.html',
     'Allow: /sitemap.xml',
     'Allow: /robots.txt',
     ...cnDirs.map((d) => `Disallow: /${d}/`),
     'Disallow: /scripts/',
+    'Disallow: /*/id=*',
+    'Disallow: /en/plugin/',
+    'Disallow: /ar/plugin/',
+    'Disallow: /en/fancybox/',
+    'Disallow: /ar/fancybox/',
+    'Disallow: /en/images/',
+    'Disallow: /ar/images/',
     '',
     `Sitemap: ${DOMAIN}/sitemap.xml`,
     '',
@@ -354,21 +575,26 @@ function optimizeRootIndex() {
   if (!fs.existsSync(indexPath)) return;
   let content = fs.readFileSync(indexPath, 'utf8');
   content = replaceDomainRefs(content);
+  content = stripOldSeo(content);
   const seo = `<!-- kiwl-seo -->
+<meta name="robots" content="noindex, follow" />
 <meta name="description" content="KIWL injection molding machines — hydraulic servo, electric & two-platen solutions. Official site: www.plasticmoldinghub.com" />
 <link rel="canonical" href="${DOMAIN}/en/index.html" />
 <link rel="alternate" hreflang="en" href="${DOMAIN}/en/index.html" />
 <link rel="alternate" hreflang="ar" href="${DOMAIN}/ar/index.html" />
 <link rel="alternate" hreflang="x-default" href="${DOMAIN}/en/index.html" />
 <!-- /kiwl-seo -->`;
-  if (!content.includes('kiwl-seo')) {
-    content = content.replace(/<meta charset="utf-8" \/>/, `<meta charset="utf-8" />\n${seo}`);
+  content = content.replace(/<meta charset="utf-8" \/>/, `<meta charset="utf-8" />\n${seo}`);
+  if (!content.includes('noindex')) {
+    content = content.replace(/<!-- kiwl-seo -->/, `<!-- kiwl-seo -->\n<meta name="robots" content="noindex, follow" />`);
   }
   fs.writeFileSync(indexPath, content, 'utf8');
 }
 
 function runOptimize() {
   let updated = 0;
+  const indexablePages = [];
+
   for (const [site, base] of [
     ['en', EN_ROOT],
     ['ar', AR_ROOT],
@@ -381,12 +607,18 @@ function runOptimize() {
         fs.writeFileSync(full, fixed, 'utf8');
         updated++;
       }
+      const content = fixed;
+      if (shouldIndex(rel, content)) {
+        indexablePages.push({ site, rel });
+      }
     }
   }
+
   optimizeRootIndex();
-  generateSitemap();
+  const sitemapCount = generateSitemap(indexablePages);
   generateRobots();
   console.log(`SEO optimized on ${updated} EN/AR pages`);
+  console.log(`Sitemap: ${sitemapCount} indexable URLs (with hreflang)`);
   console.log(`Domain: ${DOMAIN}`);
   console.log('Generated robots.txt and sitemap.xml');
 }
@@ -395,4 +627,11 @@ if (require.main === module) {
   runOptimize();
 }
 
-module.exports = { optimizePage, runOptimize, replaceDomainRefs };
+module.exports = {
+  optimizePage,
+  runOptimize,
+  replaceDomainRefs,
+  shouldIndex,
+  getKeywords,
+  cleanTopic,
+};

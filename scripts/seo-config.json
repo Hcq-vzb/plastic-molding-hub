@@ -9,52 +9,90 @@
   "whatsapp": "+8617751189576",
   "titleSuffixEn": "| KIWL · PlasticMoldingHub",
   "titleSuffixAr": "| KIWL · PlasticMoldingHub",
-  "keywordsEn": {
-    "default": "injection molding machine, plastic injection molding, KIWL, Quantang Group, plasticmoldinghub, injection moulding machine manufacturer",
-    "home": "injection molding machine manufacturer, plastic injection machine, KIWL, hydraulic servo injection molding, electric injection molding machine, two-platen injection machine, plasticmoldinghub",
-    "products": "injection molding machine, plastic injection machine, KIWL products, injection moulding equipment, plasticmoldinghub",
-    "products_1": "hydraulic servo injection molding machine, servo injection machine, SK injection molding machine, KIWL hydraulic injection",
-    "products_2": "electric injection molding machine, all-electric injection machine, SE series injection molding, KIWL electric injection",
-    "products_3": "two-platen injection molding machine, two plate injection moulding machine, large tonnage injection machine, KIWL",
-    "gyyyf": "specialized injection molding machine, custom injection machine, medical injection molding machine, high-speed injection molding, KIWL",
-    "solution": "injection molding applications, plastic molding solutions, industrial injection molding, plasticmoldinghub",
-    "app_automotive": "automotive injection molding, auto parts injection machine, car component molding, KIWL",
-    "app_medical": "medical injection molding machine, medical device molding, clean room injection molding, KIWL",
-    "app_daily": "daily necessities injection molding, consumer goods plastic molding, KIWL",
-    "app_electronics": "electronics injection molding, precision plastic injection, connector molding, KIWL",
-    "app_appliance": "home appliance injection molding, white goods plastic molding, KIWL",
-    "app_packaging": "packaging injection molding, container molding machine, KIWL",
-    "app_logistics": "logistics packaging injection molding, environmental plastic solutions, KIWL",
-    "app_shoe": "shoe material injection molding, footwear plastic molding, KIWL",
-    "app_stationery": "stationery injection molding, pen injection molding machine, KIWL",
-    "app_agricultural": "agricultural plastic injection molding, agrochemical packaging molding, KIWL",
-    "news": "KIWL news, injection molding industry news, plastic machinery exhibitions, CHINAPLAS, plasticmoldinghub",
-    "services": "contact KIWL, injection molding machine quote, plastic molding support, plasticmoldinghub",
-    "about": "KIWL company, Quantang Group, injection molding manufacturer China, plasticmoldinghub",
-    "job": "KIWL careers, injection molding jobs, plastic machinery careers"
+  "keywordPyramid": {
+    "en": {
+      "tier1": "injection molding machine manufacturer, plastic injection molding machine, KIWL, Quantang Group, plasticmoldinghub",
+      "tier2": {
+        "products": "injection molding machine, plastic injection machine, injection moulding equipment",
+        "products_1": "hydraulic servo injection molding machine, servo injection machine, SK injection molding machine",
+        "products_2": "electric injection molding machine, all-electric injection machine, SE series injection molding",
+        "products_3": "two-platen injection molding machine, large tonnage injection machine, two plate injection moulding",
+        "gyyyf": "specialized injection molding machine, high-speed injection molding, custom injection machine",
+        "solution": "injection molding applications, plastic molding solutions, industrial injection molding",
+        "app_automotive": "automotive injection molding, auto parts injection machine, car component molding",
+        "app_medical": "medical injection molding machine, medical device molding, clean room injection molding",
+        "app_daily": "daily necessities injection molding, consumer goods plastic molding",
+        "app_electronics": "electronics injection molding, precision plastic injection, connector molding",
+        "app_appliance": "home appliance injection molding, white goods plastic molding",
+        "app_packaging": "packaging injection molding, container molding machine, food packaging injection",
+        "app_logistics": "logistics packaging injection molding, environmental plastic solutions",
+        "app_shoe": "shoe material injection molding, footwear plastic molding, TPU injection machine",
+        "app_stationery": "stationery injection molding, pen injection molding machine",
+        "app_agricultural": "agricultural plastic injection molding, agrochemical packaging molding",
+        "news": "KIWL news, injection molding industry news, plastic machinery exhibitions, CHINAPLAS",
+        "services": "contact KIWL, injection molding machine quote, plastic molding support",
+        "about": "KIWL company, Quantang Group, injection molding manufacturer China",
+        "job": "KIWL careers, injection molding jobs, plastic machinery careers"
+      }
+    },
+    "ar": {
+      "tier1": "مصنع آلات حقن البلاستيك, آلة حقن البلاستيك, KIWL, مجموعة تشيوان تانغ, plasticmoldinghub",
+      "tier2": {
+        "products": "آلات حقن البلاستيك, معدات حقن, منتجات KIWL",
+        "products_1": "آلة حقن هيدروليكية بخادم, سلسلة SK, آلة حقن سيرvo",
+        "products_2": "آلة حقن كهربائية, آلة حقن كهربائية بالكامل, سلسلة SE",
+        "products_3": "آلة حقن ثنائية اللوحة, آلة حقن كبيرة, آلة حقن heavy tonnage",
+        "gyyyf": "آلة حقن متخصصة, آلة حقن عالية السرعة, آلة حقن مخصصة",
+        "solution": "تطبيقات حقن البلاستيك, حلول حقن صناعية, حقن بلاستيك صناعي",
+        "app_automotive": "حقن قطع غيار السيارات, حقن بلاستيك السيارات, حقن مكونات السيارات",
+        "app_medical": "حقن معدات طبية, آلة حقن طبية, حقن غرف نظيفة",
+        "app_daily": "حقن سلع استهلاكية, منتجات يومية بلاستيك",
+        "app_electronics": "حقن إلكترونيات, حقن دقيق للإلكترونيات",
+        "app_appliance": "حقن أجهزة منزلية, حقن الأجهزة المنزلية",
+        "app_packaging": "حقن تعبئة وتغليف, حاويات بلاستيك, حقن تغليف غذائي",
+        "app_logistics": "حقن لوجستيات, حلول بلاستيك بيئية",
+        "app_shoe": "حقن مواد أحذية, حقن أحذية, آلة حقن TPU",
+        "app_stationery": "حقن قرطاسية, آلة حقن أقلام",
+        "app_agricultural": "حقن زراعي, تعبئة agrochemical, حقن بلاستيك زراعي",
+        "news": "أخبار KIWL, معارض البلاستيك, CHINAPLAS, أخبار صناعة الحقن",
+        "services": "اتصل بـ KIWL, عرض سعر آلة حقن, دعم فني",
+        "about": "شركة KIWL, مجموعة تشيوان تانغ, مصنع آلات الحقن الصين",
+        "job": "وظائف KIWL, التوظيف, وظائف آلات البلاستيك"
+      }
+    }
   },
-  "keywordsAr": {
-    "default": "آلة حقن البلاستيك, آلة حقن, KIWL, مجموعة تشيوان تانغ, plasticmoldinghub, مصنع آلات الحقن",
-    "home": "مصنع آلات حقن البلاستيك, آلة حقن هيدروليكية, آلة حقن كهربائية, KIWL, آلة حقن ثنائية اللوحة, plasticmoldinghub",
-    "products": "آلات حقن البلاستيك, معدات حقن, منتجات KIWL, plasticmoldinghub",
-    "products_1": "آلة حقن هيدروليكية بخادم, سلسلة SK, KIWL",
-    "products_2": "آلة حقن كهربائية, آلة حقن كهربائية بالكامل, سلسلة SE, KIWL",
-    "products_3": "آلة حقن ثنائية اللوحة, آلة حقن كبيرة, KIWL",
-    "gyyyf": "آلة حقن متخصصة, آلة حقن طبية, آلة حقن عالية السرعة, KIWL",
-    "solution": "تطبيقات حقن البلاستيك, حلول حقن صناعية, plasticmoldinghub",
-    "app_automotive": "حقن قطع غيار السيارات, حقن بلاستيك السيارات, KIWL",
-    "app_medical": "حقن معدات طبية, آلة حقن طبية, KIWL",
-    "app_daily": "حقن سلع استهلاكية, منتجات يومية بلاستيك, KIWL",
-    "app_electronics": "حقن إلكترونيات, حقن دقيق للإلكترونيات, KIWL",
-    "app_appliance": "حقن أجهزة منزلية, KIWL",
-    "app_packaging": "حقن تعبئة وتغليف, حاويات بلاستيك, KIWL",
-    "app_logistics": "حقن لوجستيات, حلول بلاستيك بيئية, KIWL",
-    "app_shoe": "حقن مواد أحذية, KIWL",
-    "app_stationery": "حقن قرطاسية, آلة حقن أقلام, KIWL",
-    "app_agricultural": "حقن زراعي, تعبئة agrochemical, KIWL",
-    "news": "أخبار KIWL, معارض البلاستيك, CHINAPLAS, plasticmoldinghub",
-    "services": "اتصل بـ KIWL, عرض سعر آلة حقن, دعم فني, plasticmoldinghub",
-    "about": "شركة KIWL, مجموعة تشيوان تانغ, مصنع آلات الحقن, plasticmoldinghub",
-    "job": "وظائف KIWL, التوظيف"
+  "descriptions": {
+    "en": {
+      "home": "KIWL (Quantang Group) manufactures hydraulic servo, electric and two-platen injection molding machines since 2002. Request a quote at www.plasticmoldinghub.com.",
+      "product": "{topic} by KIWL — precision injection molding machine with servo hydraulics, stable clamping and energy efficiency. Request specs and factory pricing.",
+      "productCategory": "{topic} from KIWL Quantang Group — full range for automotive, medical, packaging and industrial plastic molding applications.",
+      "application": "{topic} injection molding solutions by KIWL. High-precision plastic parts production with reliable machine performance and global support.",
+      "news": "{topic} — KIWL injection molding industry news, exhibitions and company updates from Quantang Group.",
+      "about": "About KIWL (Quantang Group) — injection molding machine manufacturer since 2002. R&D, production, sales and worldwide service from Shanghai.",
+      "services": "Contact KIWL for injection molding machine quotes, technical support and after-sales service. Quantang Group — global plastic molding partner.",
+      "solution": "KIWL injection molding applications across automotive, medical, electronics, packaging and more. Find the right machine for your plastic parts.",
+      "job": "Join KIWL Quantang Group — careers in injection molding machine engineering, sales and manufacturing.",
+      "default": "{topic} — KIWL (Quantang Group) injection molding machines since 2002. Visit plasticmoldinghub.com for quotes."
+    },
+    "ar": {
+      "home": "KIWL (مجموعة تشيوان تانغ) تصنع آلات حقن هيدروليكية وكهربائية وثنائية اللوحة منذ 2002. تواصل معنا على www.plasticmoldinghub.com.",
+      "product": "{topic} من KIWL — آلة حقن دقيقة بهيدروليك سيرvo وكبح مستقر وكفاءة طاقة. اطلب المواصفات وعرض السعر من المصنع.",
+      "productCategory": "{topic} من KIWL مجموعة تشيوان تانغ — مجموعة كاملة لتطبيقات السيارات والطب والتعبئة والحقن الصناعي.",
+      "application": "حلول حقن {topic} من KIWL. إنتاج قطع بلاستيكية عالية الدقة مع أداء موثوق ودعم عالمي.",
+      "news": "{topic} — أخبار KIWL وصناعة آلات حقن البلاستيك ومعارض Quantang Group.",
+      "about": "عن KIWL (مجموعة تشيوان تانغ) — مصنع آلات حقن البلاستيك منذ 2002. البحث والتطوير والإنتاج والمبيعات والخدمة العالمية.",
+      "services": "تواصل مع KIWL للحصول على عروض أسعار آلات الحقن والدعم الفني وخدمة ما بعد البيع.",
+      "solution": "تطبيقات حقن KIWL في السيارات والطب والإلكترونيات والتعبئة والمزيد. اعثر على الآلة المناسبة لقطعك البلاستيكية.",
+      "job": "انضم إلى KIWL مجموعة تشيوان تانغ — وظائف في هندسة آلات الحقن والمبيعات والتصنيع.",
+      "default": "{topic} — KIWL (مجموعة تشيوان تانغ) آلات حقن البلاستيك منذ 2002. plasticmoldinghub.com"
+    }
+  },
+  "titles": {
+    "en": {
+      "home": "Injection Molding Machines Manufacturer"
+    },
+    "ar": {
+      "home": "مصنع آلات حقن البلاستيك"
+    }
   }
 }

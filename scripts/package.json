@@ -4,6 +4,7 @@
   "description": "",
   "main": "build-ar-site.js",
   "scripts": {
+    "seo": "node optimize-seo.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

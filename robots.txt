@@ -1,7 +1,6 @@
 User-agent: *
 Allow: /en/
 Allow: /ar/
-Allow: /index.html
 Allow: /sitemap.xml
 Allow: /robots.txt
 Disallow: /about/
@@ -41,10 +40,16 @@ Disallow: /txdz/
 Disallow: /jd/
 Disallow: /bz/
 Disallow: /wlhb/
-Disallow: /xc/
 Disallow: /wj/
 Disallow: /agricultural/
 Disallow: /plugin/
 Disallow: /scripts/
+Disallow: /*/id=*
+Disallow: /en/plugin/
+Disallow: /ar/plugin/
+Disallow: /en/fancybox/
+Disallow: /ar/fancybox/
+Disallow: /en/images/
+Disallow: /ar/images/
 
 Sitemap: https://www.plasticmoldinghub.com/sitemap.xml
